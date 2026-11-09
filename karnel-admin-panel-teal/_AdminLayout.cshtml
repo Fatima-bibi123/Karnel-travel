@@ -1,0 +1,74 @@
+@*
+  KarnelTravelGuide — Admin layout (teal + gold theme)
+  Same markup/classes as the admin panel's index.html; only the page-specific
+  parts became Razor (title, active menu item, @RenderBody).
+  Adjust the href="~/..." paths to your real routes if they differ.
+*@
+@{
+    var path = (Context.Request.Path.Value ?? "/").ToLowerInvariant();
+    bool isHome = path == "/" || path.TrimEnd('/') == "/admin" || path.Contains("dashboard");
+    string Active(string slug) => path.Contains(slug) ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>@ViewData["Title"] | KarnelTravelGuide Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="theme-color" content="#0F645F">
+    @* style.css loads Inter + Source Serif Pro itself *@
+    <link rel="stylesheet" href="~/assets/style.css" asp-append-version="true">
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+<div class="app">
+
+    <aside class="sidebar">
+        @* Logo: airplane icon + "KarnelTravelGuide" are drawn by CSS (.brand:before / :after) *@
+        <div class="brand">Karnel<span>Admin</span></div>
+
+        <nav class="nav">
+            <div class="nav-label">Main Menu</div>
+            <a href="~/" class="@(isHome ? "active" : "")"><span class="icon">▦</span>Dashboard</a>
+            <a href="~/users" class="@Active("user")"><span class="icon">♙</span>Users</a>
+            <a href="~/hotels" class="@Active("hotel")"><span class="icon">⌂</span>Hotels</a>
+            <a href="~/restaurants" class="@Active("restaurant")"><span class="icon">♨</span>Restaurants</a>
+            <a href="~/resorts" class="@Active("resort")"><span class="icon">⌂</span>Resorts</a>
+            <a href="~/tourist-spots" class="@Active("tourist")"><span class="icon">⌖</span>Tourist Spots</a>
+            <a href="~/travel-info" class="@Active("travel")"><span class="icon">▤</span>Travel Info</a>
+            <a href="~/orders" class="@Active("order")"><span class="icon">▣</span>Orders</a>
+            <a href="~/feedback" class="@Active("feedback")"><span class="icon">☆</span>Feedback</a>
+            <a href="~/messages" class="@Active("message")"><span class="icon">✉</span>Messages</a>
+            <a href="~/settings" class="@Active("setting")"><span class="icon">⚙</span>Settings</a>
+        </nav>
+
+        <div class="sidebar-bottom"><a href="~/login">↪ Logout</a></div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <button class="menu-btn" aria-label="Open menu">☰</button>
+            <div class="search"><span class="search-icon">⌕</span><input id="globalSearch" placeholder="Search..."></div>
+            <div class="top-actions">
+                <button class="notification" data-toast="No new notifications" aria-label="Notifications">♢<span class="dot"></span></button>
+                <div class="admin">
+                    <div class="avatar">A</div>
+                    <div class="admin-info"><b>Admin</b><small>Administrator</small></div>
+                    <span>⌄</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content">
+            @RenderBody()
+        </section>
+    </main>
+
+</div>
+<div class="toast"></div>
+<script src="~/assets/app.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

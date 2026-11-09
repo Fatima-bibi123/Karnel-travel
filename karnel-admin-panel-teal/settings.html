@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Settings | Karnel Admin</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><div class="app">
+<aside class="sidebar"><div class="brand">Karnel<span>Admin</span></div><nav class="nav"><div class="nav-label">Main Menu</div><a href="index.html" class=""><span class="icon">▦</span>Dashboard</a><a href="users.html" class=""><span class="icon">♙</span>Users</a><a href="hotels.html" class=""><span class="icon">⌂</span>Hotels</a><a href="restaurants.html" class=""><span class="icon">♨</span>Restaurants</a><a href="resorts.html" class=""><span class="icon">⌂</span>Resorts</a><a href="tourist-spots.html" class=""><span class="icon">⌖</span>Tourist Spots</a><a href="travel-info.html" class=""><span class="icon">▤</span>Travel Info</a><a href="orders.html" class=""><span class="icon">▣</span>Orders</a><a href="feedback.html" class=""><span class="icon">☆</span>Feedback</a><a href="messages.html" class=""><span class="icon">✉</span>Messages</a><a href="settings.html" class="active"><span class="icon">⚙</span>Settings</a></nav>
+<div class="sidebar-bottom"><a href="login.html" style="display:flex;gap:12px;align-items:center;padding:11px 13px;color:#aebbd0;font-size:14px">↪ Logout</a></div></aside>
+<main class="main"><header class="topbar"><button class="menu-btn">☰</button>
+<div class="search"><span class="search-icon">⌕</span><input id="globalSearch" placeholder="Search..."></div>
+<div class="top-actions"><button class="notification" data-toast="No new notifications">♢<span class="dot"></span></button>
+<div class="admin"><div class="avatar">A</div><div class="admin-info"><b>Admin</b><small>Administrator</small></div><span>⌄</span></div></div></header>
+<section class="content">
+<div class="page-head"><div><h1>Settings</h1><p>Manage your admin account and application preferences.</p></div></div>
+<div class="grid-2">
+<div class="card"><div class="card-head"><h2>General Settings</h2></div>
+<div class="form-grid">
+<div class="form-group"><label>Site Name</label><input class="form-control" value="Karnel"></div>
+<div class="form-group"><label>Admin Email</label><input class="form-control" value="admin@karnel.com"></div>
+<div class="form-group"><label>Timezone</label><select class="form-control"><option>Asia/Karachi (GMT+5)</option><option>UTC</option></select></div>
+<div class="form-group"><label>Language</label><select class="form-control"><option>English</option><option>Urdu</option></select></div>
+<div class="form-group full"><label>Site Description</label><textarea class="form-control">Discover hotels, restaurants, resorts, tourist spots and travel information with Karnel.</textarea></div>
+</div><br><button class="btn btn-primary" data-toast="Settings saved successfully">Save Changes</button></div>
+<div class="card"><div class="card-head"><h2>Notifications</h2></div>
+<div class="activity"><div class="activity-icon">✉</div><div><strong>Email Notifications</strong><p>Receive alerts for new orders and messages.</p></div><input type="checkbox" checked style="margin-left:auto"></div>
+<div class="activity"><div class="activity-icon">▣</div><div><strong>Order Updates</strong><p>Get notified when order status changes.</p></div><input type="checkbox" checked style="margin-left:auto"></div>
+<div class="activity"><div class="activity-icon">☆</div><div><strong>Feedback Alerts</strong><p>Receive notifications for new reviews.</p></div><input type="checkbox" checked style="margin-left:auto"></div>
+</div></div>
+</section></main></div><div class="toast"></div><script src="assets/app.js"></script></body></html>
