@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karnel Admin - Login</title>
+<link rel="stylesheet" href="~/admin/css/style.css" />
+</head>
+<body>
+<div class="login-page">
+    <div class="login-decoration login-decoration-one"></div>
+    <div class="login-decoration login-decoration-two"></div>
+    <div class="login-box">
+        <div class="login-left">
+            <div class="login-logo">K</div>
+            <div class="login-brand-name">Karnel<span>Admin</span></div>
+            <h1>Welcome back.</h1>
+            <p class="login-description">Sign in to your administration panel and manage everything from one powerful dashboard.</p>
+            <div class="login-points">
+                <div class="login-point"><div class="point-icon">✓</div><div><strong>Secure Access</strong><small>Your administration panel is protected.</small></div></div>
+                <div class="login-point"><div class="point-icon">✓</div><div><strong>Easy Management</strong><small>Manage your platform from one place.</small></div></div>
+                <div class="login-point"><div class="point-icon">✓</div><div><strong>Powerful Dashboard</strong><small>Monitor your system with ease.</small></div></div>
+            </div>
+        </div>
+        <div class="login-right">
+            <div class="login-header">
+                <div class="mobile-logo">K</div>
+                <h2>Sign in</h2>
+                <p>Enter your credentials to continue.</p>
+            </div>
+            @if(TempData["ErrorMessage"] != null){
+                <div style="background:#fee; color:#c00; padding:10px; border-radius:8px; margin-bottom:15px;">@TempData["ErrorMessage"]</div>
+            }
+            <form asp-action="login" asp-controller="Admin" method="post">
+                @Html.AntiForgeryToken()
+                <div class="login-field">
+                    <label for="login-email">Email Address</label>
+                    <div class="login-input-wrap">
+                        <span class="login-input-icon">✉</span>
+                        <input type="email" id="login-email" name="Email" placeholder="admin@karnel.com" value="admin@karnel.com" required>
+                    </div>
+                </div>
+                <div class="login-field">
+                    <div class="password-label-row">
+                        <label for="login-password">Password</label>
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    <div class="login-input-wrap">
+                        <span class="login-input-icon">🔒</span>
+                        <input type="password" id="login-password" name="Password" placeholder="Enter your password" value="admin123" required>
+                        <button type="button" class="show-password" onclick="toggleLoginPassword()">👁</button>
+                    </div>
+                </div>
+                <div class="login-options">
+                    <label class="remember-login"><input type="checkbox" name="remember" checked><span>Remember me</span></label>
+                </div>
+                <button type="submit" class="login-submit"><span>Sign In</span><span class="login-arrow">→</span></button>
+            </form>
+            <div class="login-security"><span>🔒</span><span>Secure administrator access</span></div>
+            <div class="login-copyright">© 2026 Karnel Admin</div>
+        </div>
+    </div>
+</div>
+<script>
+function toggleLoginPassword(){
+    const password = document.getElementById("login-password");
+    const button = document.querySelector(".show-password");
+    if(password.type === "password"){ password.type = "text"; button.textContent = "🙈"; }
+    else { password.type = "password"; button.textContent = "👁"; }
+}
+</script>
+</body>
+</html>

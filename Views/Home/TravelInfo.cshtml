@@ -1,0 +1,91 @@
+@model IEnumerable<TravelInfo>
+
+@{
+    ViewData["Title"] = "Travel Info";
+}
+
+<section class="page-header" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/15916728/pexels-photo-15916728.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');">
+    <div class="container">
+        <div class="page-header-content text-center" data-aos="fade-up">
+            <h1>Travel Information</h1>
+            <p>Transportation options between Karachi, Lahore, Islamabad, Hunza Valley & Murree</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="transport-info-card">
+                    <i class="fas fa-plane transport-icon"></i>
+                    <h5>Flight</h5>
+                    <p>Fastest way to travel between major cities. Ideal for long-distance routes.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="transport-info-card">
+                    <i class="fas fa-train transport-icon"></i>
+                    <h5>Train</h5>
+                    <p>Comfortable and affordable. Enjoy scenic views during your journey.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="transport-info-card">
+                    <i class="fas fa-bus transport-icon"></i>
+                    <h5>Bus</h5>
+                    <p>Economical option with multiple departures daily. Great for budget travelers.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="transport-info-card">
+                    <i class="fas fa-car transport-icon"></i>
+                    <h5>Car</h5>
+                    <p>Flexible travel at your own pace. Perfect for hill stations and valleys.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive" data-aos="fade-up">
+            <table class="table table-hover travel-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-route me-1"></i> From</th>
+                        <th><i class="fas fa-arrow-right me-1"></i> To</th>
+                        <th><i class="fas fa-bus me-1"></i> Transport Type</th>
+                        <th><i class="fas fa-money-bill me-1"></i> Price (PKR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var travel in Model)
+                    {
+                        <tr>
+                            <td><strong>@travel.FromCity</strong></td>
+                            <td><strong>@travel.ToCity</strong></td>
+                            <td>
+                                @if (travel.TransportType == "Flight")
+                                {
+                                    <i class="fas fa-plane me-1 transport-type-icon"></i>
+                                }
+                                else if (travel.TransportType == "Train")
+                                {
+                                    <i class="fas fa-train me-1 transport-type-icon"></i>
+                                }
+                                else if (travel.TransportType == "Bus")
+                                {
+                                    <i class="fas fa-bus me-1 transport-type-icon"></i>
+                                }
+                                else if (travel.TransportType == "Car")
+                                {
+                                    <i class="fas fa-car me-1 transport-type-icon"></i>
+                                }
+                                @travel.TransportType
+                            </td>
+                            <td class="price-cell">PKR @travel.Price.ToString("N0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

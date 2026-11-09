@@ -1,0 +1,79 @@
+﻿@model List<KarnelTravelGuide.Models.Feedback>
+@{
+    ViewData["Title"] = "Feedback";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Feedback</h1>
+        <p>Review customer ratings and feedback.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>CUSTOMER</th>
+                    <th>EMAIL</th>
+                    <th>RATING</th>
+                    <th>MESSAGE</th>
+                    <th>DATE</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Email</td>
+                            <td>@item.Rating ⭐</td>
+                            <td title="@item.Message" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">@item.Message</td>
+                            <td>@item.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                @if (item.Status == "Published")
+                                {
+                                    <span class="badge confirmed">Published</span>
+                                }
+                                else
+                                {
+                                    <span class="badge pending" style="background:#fff3cd;color:#856404;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="actions" style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;">
+                                    
+                                    <a href="/Admin/ToggleFeedbackStatus/@item.Id"
+                                       style="display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;background:#e8f3ff;color:#1765a8;border:1px solid #c8e0fa;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap;">
+                                        @(item.Status == "Published" ? "Unpublish" : "Publish")
+                                    </a>
+
+                                    <a href="/Admin/DeleteFeedback/@item.Id"
+                                       onclick="return confirm('Are you sure you want to delete this feedback?');"
+                                       style="display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;background:#fff0ef;color:#c62828;border:1px solid #f5c2bf;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap;">
+                                        🗑 Delete
+                                    </a>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" style="text-align:center;padding:30px;color:#888;">
+                            No feedback found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

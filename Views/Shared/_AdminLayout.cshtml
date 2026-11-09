@@ -1,0 +1,67 @@
+﻿@{
+    var path = (Context.Request.Path.Value ?? "/").ToLowerInvariant();
+    string Active(string slug) => path.Contains(slug) ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] | Karnel Admin</title>
+
+    <link rel="icon" type="image/jpeg" href="~/favicon.jpg" />
+
+    <link rel="stylesheet" href="~/admin/css/style.css" asp-append-version="true">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">Karnel<span>Admin</span></div>
+            <nav class="nav">
+                <div class="nav-label">Main Menu</div>
+                <a href="/Admin/Dashboard" class="@Active("dashboard")"><span class="icon">▦</span>Dashboard</a>
+                <a href="/Admin/Users" class="@Active("user")"><span class="icon">♙</span>Users</a>
+                <a href="/Admin/Hotels" class="@Active("hotel")"><span class="icon">⌂</span>Hotels</a>
+                <a href="/Admin/Restaurants" class="@Active("restaurant")"><span class="icon">♨</span>Restaurants</a>
+                <a href="/Admin/Resorts" class="@Active("resort")"><span class="icon">⌂</span>Resorts</a>
+                <a href="/Admin/TouristSpots" class="@Active("tourist")"><span class="icon">⌖</span>Tourist Spots</a>
+                <a href="/Admin/TravelInfo" class="@Active("travel")"><span class="icon">▤</span>Travel Info</a>
+                <a href="/Admin/Orders" class="@Active("order")"><span class="icon">▣</span>Orders</a>
+                <a href="/Admin/Feedback" class="@Active("feedback")"><span class="icon">☆</span>Feedback</a>
+                <a href="/Admin/Messages" class="@Active("message")"><span class="icon">✉</span>Messages</a>
+                <a href="/Admin/Settings" class="@Active("setting")"><span class="icon">⚙</span>Settings</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="/Account/Logout">↪ Logout</a>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <button type="button" class="menu-btn">☰</button>
+                <div class="top-actions">
+                    <button type="button" class="notification" data-toast="No new notifications">
+                        ♢ <span class="dot"></span>
+                    </button>
+                    <div class="admin">
+                        <div class="avatar">A</div>
+                        <div class="admin-info">
+                            <b>Admin</b>
+                            <small>Administrator</small>
+                        </div>
+                        <span>⌄</span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="content">
+                @RenderBody()
+            </section>
+        </main>
+    </div>
+
+    <div class="toast"></div>
+    <script src="~/admin/js/app.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

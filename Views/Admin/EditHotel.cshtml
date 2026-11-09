@@ -1,0 +1,56 @@
+﻿@model KarnelTravelGuide.Models.Hotel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Hotel";
+}
+<div class="card" style="padding:25px">
+<h2>Edit Hotel</h2>
+
+@if (ViewBag.FormErrors != null)
+{
+    <div style="background:#fff0ef; padding:10px; border-radius:8px; margin-bottom:15px;">
+        @foreach(var err in ViewBag.FormErrors)
+        {
+            <div style="color:#c62828; font-size:13px;">@err</div>
+        }
+    </div>
+}
+
+<form asp-action="EditHotel" enctype="multipart/form-data" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImageUrl" />
+
+    <label>Name</label>
+    <input asp-for="Name" class="form-control" required />
+    
+    <label>City</label>
+    <input asp-for="City" class="form-control" required />
+    
+    <label>Price Per Night (PKR)</label>
+    <input asp-for="PricePerNight" type="number" step="0.01" class="form-control" required />
+    
+    <label>Rating (1-5)</label>
+    <input asp-for="Rating" type="number" min="1" max="5" class="form-control" />
+    
+    <label>Current Image</label><br/>
+    @if(!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" style="width:120px; height:80px; object-fit:cover; border-radius:8px; margin-bottom:10px;" />
+    }
+    <br/>
+
+    <label>Change Image (optional)</label>
+    <input type="file" name="ImageFile" class="form-control" />
+
+    <div style="margin-top:15px;">
+        <label>Available?</label>
+        <input type="hidden" name="Availability" value="false" />
+        <input type="checkbox" name="Availability" value="true" @(Model.Availability ? "checked" : "") /> Yes
+    </div>
+
+    <br/>
+    <button type="submit" class="btn btn-primary">Update Hotel</button>
+    <a href="/Admin/Hotels" class="btn btn-light" style="margin-left:10px;">Cancel</a>
+</form>
+</div>

@@ -1,0 +1,244 @@
+@{
+    ViewData["Title"] = "Home";
+    var sliderSpots = ViewBag.SliderSpots as List<TouristSpot>;
+    var featuredSpots = ViewBag.FeaturedSpots as List<TouristSpot>;
+    var hotels = ViewBag.Hotels as List<Hotel>;
+    var restaurants = ViewBag.Restaurants as List<Restaurant>;
+}
+
+<section class="hero-slider-section">
+    <div class="swiper heroSwiper">
+        <div class="swiper-wrapper">
+            @if (sliderSpots != null)
+            {
+                foreach (var spot in sliderSpots)
+                {
+                    <div class="swiper-slide hero-slide" style="background-image: url('@spot.ImageUrl');">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content container">
+                            <span class="hero-category" data-aos="fade-down">@spot.Category</span>
+                            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="200">@spot.Name</h1>
+                            <p class="hero-location" data-aos="fade-up" data-aos-delay="400">
+                                <i class="fas fa-map-marker-alt me-2"></i>@spot.Location
+                            </p>
+                            <p class="hero-description" data-aos="fade-up" data-aos-delay="600">@spot.Description</p>
+                            <a href="@Url.Action("TouristSpots", "Home")" class="btn btn-explore" data-aos="fade-up" data-aos-delay="800">
+                                Explore More <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<section class="search-section" data-aos="fade-up">
+    <div class="container">
+        <div class="search-box-wrapper">
+            <h3 class="search-heading text-center">Find Your Next Destination</h3>
+            <p class="search-subtitle text-center">Search tourist spots, hotels, restaurants, and resorts by city</p>
+            <form asp-controller="Home" asp-action="Search" method="get" class="search-form">
+                <div class="input-group search-input-group">
+                    <span class="input-group-text search-icon"><i class="fas fa-search"></i></span>
+                    <input type="text" name="location" class="form-control search-input"
+                           placeholder="Search by city (e.g., Karachi, Lahore, Islamabad, Hunza Valley, Murree)" />
+                    <button type="submit" class="btn btn-search">Search <i class="fas fa-arrow-right ms-1"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding" id="featured-spots">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-subtitle">Discover Pakistan</span>
+            <h2 class="section-title">Featured Tourist Spots</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="row g-4 mt-3">
+            @if (featuredSpots != null)
+            {
+                foreach (var spot in featuredSpots)
+                {
+                    <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="card tourist-card">
+                            <div class="card-image-wrapper">
+                                <img src="@spot.ImageUrl" class="card-img-top" alt="@spot.Name" loading="lazy" />
+                                <span class="card-badge">@spot.Category</span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@spot.Name</h5>
+                                <p class="card-location"><i class="fas fa-map-marker-alt me-1"></i>@spot.Location</p>
+                                <p class="card-text">@spot.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="text-center mt-4" data-aos="fade-up">
+            <a href="@Url.Action("TouristSpots", "Home")" class="btn btn-view-all">View All Tourist Spots</a>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding bg-light-custom" id="featured-hotels">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-subtitle">Stay in Comfort</span>
+            <h2 class="section-title">Featured Hotels</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="row g-4 mt-3">
+            @if (hotels != null)
+            {
+                foreach (var hotel in hotels)
+                {
+                    <div class="col-lg-3 col-md-6" data-aos="flip-left" data-aos-delay="100">
+                        <div class="card hotel-card">
+                            <div class="card-image-wrapper">
+                                <img src="@hotel.ImageUrl" class="card-img-top" alt="@hotel.Name" loading="lazy" />
+                                <span class="availability-badge @(hotel.Availability ? "available" : "unavailable")">
+                                    @(hotel.Availability ? "Available" : "Booked")
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@hotel.Name</h5>
+                                <p class="card-location"><i class="fas fa-map-marker-alt me-1"></i>@hotel.City</p>
+                                <div class="rating-stars">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="@(i <= hotel.Rating ? "fas" : "far") fa-star"></i>
+                                    }
+                                </div>
+                                <p class="hotel-price">PKR @hotel.PricePerNight.ToString("N0")<span class="per-night"> /night</span></p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="text-center mt-4" data-aos="fade-up">
+            <a href="@Url.Action("Hotels", "Home")" class="btn btn-view-all">View All Hotels</a>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding" id="featured-restaurants">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-subtitle">Taste the Flavors</span>
+            <h2 class="section-title">Featured Restaurants</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="row g-4 mt-3">
+            @if (restaurants != null)
+            {
+                foreach (var restaurant in restaurants)
+                {
+                    <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-delay="100">
+                        <div class="card restaurant-card">
+                            <div class="card-image-wrapper">
+                                <img src="@restaurant.ImageUrl" class="card-img-top" alt="@restaurant.Name" loading="lazy" />
+                                <span class="cuisine-badge">@restaurant.Cuisine</span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@restaurant.Name</h5>
+                                <p class="card-location"><i class="fas fa-map-marker-alt me-1"></i>@restaurant.City</p>
+                                <div class="rating-stars">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="@(i <= restaurant.Rating ? "fas" : "far") fa-star"></i>
+                                    }
+                                    <span class="rating-number">@restaurant.Rating.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="text-center mt-4" data-aos="fade-up">
+            <a href="@Url.Action("Restaurants", "Home")" class="btn btn-view-all">View All Restaurants</a>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding bg-light-custom" id="why-choose-us">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-subtitle">Our Advantages</span>
+            <h2 class="section-title">Why Choose Us</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="row g-4 mt-3">
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fas fa-tags"></i></div>
+                    <h4>Best Price Guarantee</h4>
+                    <p>Get the most competitive prices on hotels, resorts, and travel packages across Pakistan.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h4>Trusted & Reliable</h4>
+                    <p>We are a verified travel guide platform with thousands of satisfied travelers.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <h4>24/7 Support</h4>
+                    <p>Our dedicated support team is available round the clock to assist you.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fas fa-map-signs"></i></div>
+                    <h4>Local Expertise</h4>
+                    <p>Our deep knowledge ensures an authentic and memorable experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in"><div class="stat-item"><div class="stat-icon"><i class="fas fa-mountain"></i></div><h2 class="counter" data-target="50">0</h2><p>Tourist Spots</p></div></div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100"><div class="stat-item"><div class="stat-icon"><i class="fas fa-hotel"></i></div><h2 class="counter" data-target="120">0</h2><p>Hotels & Resorts</p></div></div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200"><div class="stat-item"><div class="stat-icon"><i class="fas fa-utensils"></i></div><h2 class="counter" data-target="80">0</h2><p>Restaurants</p></div></div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="300"><div class="stat-item"><div class="stat-icon"><i class="fas fa-users"></i></div><h2 class="counter" data-target="10000">0</h2><p>Happy Travelers</p></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content text-center" data-aos="fade-up">
+            <h2>Ready to Explore Pakistan?</h2>
+            <p>Discover the beauty of Karachi, Lahore, Islamabad, Hunza Valley, and Murree with us.</p>
+            <a href="@Url.Action("Contact", "Home")" class="btn btn-cta">Get Started <i class="fas fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var swiper = new Swiper('.heroSwiper', {
+            effect: 'fade',
+            fadeEffect: { crossFade: true },
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            loop: true,
+            pagination: { el: '.swiper-pagination', clickable: true },
+            speed: 1000
+        });
+    </script>
+}

@@ -1,0 +1,41 @@
+
+@model IEnumerable<Resort>
+
+@{
+    ViewData["Title"] = "Resorts";
+}
+
+<!-- ==================== PAGE HEADER ==================== -->
+<section class="page-header" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/261181/pexels-photo-261181.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');">
+    <div class="container">
+        <div class="page-header-content text-center" data-aos="fade-up">
+            <h1>Resorts</h1>
+            <p>Relax and unwind at Pakistan's finest resorts</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== RESORTS GRID ==================== -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var resort in Model)
+            {
+                <!-- Resort card with price display -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card resort-card">
+                        <div class="card-image-wrapper">
+                            <img src="@resort.ImageUrl" class="card-img-top" alt="@resort.Name" loading="lazy" />
+                            <span class="resort-price-badge">PKR @resort.Price.ToString("N0")</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@resort.Name</h5>
+                            <p class="card-location"><i class="fas fa-map-marker-alt me-1"></i>@resort.City</p>
+                            <a href="@Url.Action("Contact", "Home")" class="btn btn-book-resort">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

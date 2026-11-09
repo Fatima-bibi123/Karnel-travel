@@ -1,0 +1,37 @@
+@model IEnumerable<TouristSpot>
+
+@{
+    ViewData["Title"] = "Tourist Spots";
+}
+
+<section class="page-header" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/31715009/pexels-photo-31715009.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');">
+    <div class="container">
+        <div class="page-header-content text-center" data-aos="fade-up">
+            <h1>Tourist Spots</h1>
+            <p>Explore the most beautiful destinations across Pakistan</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var spot in Model)
+            {
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="card tourist-card">
+                        <div class="card-image-wrapper">
+                            <img src="@spot.ImageUrl" class="card-img-top" alt="@spot.Name" loading="lazy" />
+                            <span class="card-badge">@spot.Category</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@spot.Name</h5>
+                            <p class="card-location"><i class="fas fa-map-marker-alt me-1"></i>@spot.Location</p>
+                            <p class="card-text">@spot.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -1,0 +1,54 @@
+﻿@model List<KarnelTravelGuide.Models.ContactMessage>
+@{
+    ViewData["Title"] = "Messages";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Messages</h1>
+        <p>Read and manage customer support messages.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>SENDER</th>
+                    <th>EMAIL</th>
+                    <th>SUBJECT</th>
+                    <th>MESSAGE</th>
+                    <th>DATE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="font-weight:600;">@item.FullName</td>
+                            <td>@item.Email</td>
+                            <td>@item.Subject</td>
+                            <td style="max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="@item.Message">@item.Message</td>
+                            <td>@item.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                <div style="display:flex;gap:8px;">
+                                    <a href="mailto:@item.Email" style="padding:7px 12px;background:#e8f3ff;color:#1765a8;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;">Reply</a>
+                                    <a href="/Admin/DeleteMessage/@item.Id" onclick="return confirm('Delete?')" style="padding:7px 12px;background:#fff0ef;color:#c62828;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;">🗑 Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="6" style="text-align:center;padding:30px;">No messages found.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

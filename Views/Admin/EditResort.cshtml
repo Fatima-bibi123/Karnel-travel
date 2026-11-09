@@ -1,0 +1,90 @@
+﻿@model KarnelTravelGuide.Models.Resort
+@{
+    ViewData["Title"] = "Update Resort";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Update Resort</h1>
+        <p>Edit resort details.</p>
+    </div>
+    <a href="/Admin/Resorts" class="btn btn-light">← Back</a>
+</div>
+
+<div class="card">
+    <form asp-controller="Admin"
+          asp-action="EditResort"
+          asp-route-id="@Model.Id"
+          method="post"
+          enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <!-- Ye line hidden rakho taake purani image na delete ho -->
+        <input type="hidden" asp-for="ImageUrl" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        @if (ViewBag.FormErrors != null)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ViewBag.FormErrors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label asp-for="Name">Resort Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter resort name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City">City</label>
+                <input asp-for="City" class="form-control" placeholder="Enter city" required />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price">Price (PKR)</label>
+                <input asp-for="Price" type="number" step="0.01" min="0" class="form-control" placeholder="Enter price" required />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Rating">Rating (1-5)</label>
+                <input asp-for="Rating" type="number" min="1" max="5" step="0.1" class="form-control" placeholder="Enter rating" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Replace Resort Image (optional)</label>
+                <input type="file" name="ImageFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                {
+                    <p style="margin-top:8px;">Current image:</p>
+                    <img src="@Model.ImageUrl" alt="Current resort image" style="max-width:180px;max-height:130px;object-fit:cover;border-radius:8px;" />
+                }
+                else
+                {
+                    <p style="margin-top:8px;">No image uploaded.</p>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Availability">Available?</label>
+                <div><input asp-for="Availability" type="checkbox" /></div>
+            </div>
+        </div>
+        <br />
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="/Admin/Resorts" class="btn btn-light">Cancel</a>
+        </div>
+    </form>
+</div>

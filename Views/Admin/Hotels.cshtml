@@ -1,0 +1,167 @@
+﻿
+@model IEnumerable<KarnelTravelGuide.Models.Hotel>
+
+@{
+    ViewData["Title"] = "Hotels";
+    var hotels = Model ?? Enumerable.Empty<KarnelTravelGuide.Models.Hotel>();
+}
+
+<div class="page-head">
+    <div>
+        <h1>Hotels</h1>
+        <p>Manage hotel listings and bookings.</p>
+    </div>
+
+    <a href="/Admin/AddHotel" class="btn btn-primary">
+        ＋ Add Hotel
+    </a>
+</div>
+
+<div class="card">
+
+    <div class="filters">
+        <input type="text"
+               placeholder="Search hotels..."
+               id="pageSearch"
+               oninput="filterHotels()">
+
+        <select id="statusFilter" onchange="filterHotels()">
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="unavailable">Unavailable</option>
+        </select>
+
+        <button type="button"
+                class="btn btn-light"
+                onclick="filterHotels()">
+            Filter
+        </button>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" style="margin:12px;">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" style="margin:12px;">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="table-wrap">
+        <table id="hotelsTable">
+            <thead>
+                <tr>
+                    <th>Hotel</th>
+                    <th>City</th>
+                    <th>Price / Night</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var hotel in hotels)
+                {
+                    <tr>
+                        <td>@hotel.Name</td>
+
+                        <td>@hotel.City</td>
+
+                        <td>Rs. @hotel.PricePerNight</td>
+
+                        <td>@hotel.Rating ⭐</td>
+
+                        <td>
+                            @if (hotel.Availability)
+                            {
+                                <span class="badge confirmed">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge">Unavailable</span>
+                            }
+                        </td>
+
+                        <td>
+                            <div class="actions"
+                                 style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+
+                                <!-- UPDATE BUTTON -->
+                                <a href="/Admin/EditHotel/@hotel.Id"
+                                   title="Update Hotel"
+                                   style="display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 12px;background:#e8f3ff;color:#1765a8;border:1px solid #c8e0fa;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap;transition:all .2s;">
+                                    ✎ Update
+                                </a>
+
+                                <!-- DELETE BUTTON -->
+                                <form action="/Admin/DeleteHotel"
+                                      method="post"
+                                      style="display:inline;margin:0;"
+                                      onsubmit="return confirm('Kya aap @hotel.Name ko delete karna chahti hain?');">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@hotel.Id" />
+
+                                    <button type="submit"
+                                            title="Delete Hotel"
+                                            style="display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 12px;background:#fff0ef;color:#c62828;border:1px solid #f5c2bf;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;">
+                                        🗑 Delete
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!hotels.Any())
+        {
+            <p style="padding:20px;text-align:center;">
+                No hotels found. Add one!
+            </p>
+        }
+    </div>
+</div>
+
+<script>
+    function filterHotels() {
+        const searchValue = document
+            .getElementById("pageSearch")
+            .value.toLowerCase().trim();
+
+        const statusValue =
+            document.getElementById("statusFilter").value;
+
+        const rows = document.querySelectorAll(
+            "#hotelsTable tbody tr"
+        );
+
+        rows.forEach(function (row) {
+            const rowText = row.innerText.toLowerCase();
+            const statusText = row.cells[4].innerText.toLowerCase();
+
+            const matchesSearch = rowText.includes(searchValue);
+
+            const matchesStatus =
+                statusValue === "all" ||
+                (statusValue === "active" &&
+                    statusText.includes("active")) ||
+                (statusValue === "unavailable" &&
+                    statusText.includes("unavailable"));
+
+            row.style.display =
+                matchesSearch && matchesStatus ? "" : "none";
+        });
+    }
+</script>

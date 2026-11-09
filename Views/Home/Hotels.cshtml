@@ -1,0 +1,59 @@
+
+@model IEnumerable<Hotel>
+
+@{
+    ViewData["Title"] = "Hotels";
+}
+<section class="page-header" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/6434592/pexels-photo-6434592.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');">
+    <div class="container">
+        <div class="page-header-content text-center" data-aos="fade-up">
+            <h1>Hotels</h1>
+            <p>Find the perfect accommodation for your stay</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var hotel in Model)
+            {
+                <!-- Hotel card with rating, price, and availability -->
+                <div class="col-lg-3 col-md-6" data-aos="flip-left" data-aos-delay="100">
+                    <div class="card hotel-card">
+                        <div class="card-image-wrapper">
+                            <img src="@hotel.ImageUrl" class="card-img-top" alt="@hotel.Name" loading="lazy" />
+                            @if (hotel.Availability)
+                            {
+                                <span class="availability-badge available">Available</span>
+                            }
+                            else
+                            {
+                                <span class="availability-badge unavailable">Booked</span>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@hotel.Name</h5>
+                            <p class="card-location"><i class="fas fa-map-marker-alt me-1"></i>@hotel.City</p>
+                            <!-- Star rating display -->
+                            <div class="rating-stars">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= hotel.Rating)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star"></i>
+                                    }
+                                }
+                            </div>
+                            <p class="hotel-price">PKR @hotel.PricePerNight.ToString("N0")<span class="per-night"> /night</span></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -1,0 +1,105 @@
+﻿
+@using KarnelTravelGuide.Models
+@model TouristSpot
+
+@{
+    ViewData["Title"] = "Update Tourist Spot";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Update Tourist Spot</h1>
+        <p>Edit destination and tourist attraction details.</p>
+    </div>
+    <a href="/Admin/TouristSpots" class="btn btn-light">← Back</a>
+</div>
+
+<div class="card">
+    <form asp-controller="Admin"
+          asp-action="EditTouristSpot"
+          asp-route-id="@Model.Id"
+          method="post"
+          enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="Name">Spot Name</label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Location">Location / City</label>
+                <input asp-for="Location" class="form-control" required />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Category">Category</label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price">Entry Fee (PKR)</label>
+                <input asp-for="Price" type="number" step="0.01"
+                       min="0" class="form-control" required />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Rating">Rating (1-5)</label>
+                <input asp-for="Rating" type="number" step="0.1"
+                       min="1" max="5" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Replace Spot Image (optional)</label>
+                <input type="file" name="ImageFile" class="form-control"
+                       accept=".jpg,.jpeg,.png,.webp" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                {
+                    <p style="margin-top:8px;">Current image:</p>
+                    <img src="@Model.ImageUrl" alt="Current tourist spot image"
+                         style="max-width:180px;max-height:130px;object-fit:cover;border-radius:8px;" />
+                }
+                else
+                {
+                    <p style="margin-top:8px;">No image uploaded.</p>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Availability">Available?</label>
+                <div>
+                    <input asp-for="Availability" type="checkbox" />
+                </div>
+            </div>
+
+            <div class="form-group full">
+                <label asp-for="Description">Description / Notes</label>
+                <textarea asp-for="Description" class="form-control"
+                          rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <br />
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">
+                Save Changes
+            </button>
+            <a href="/Admin/TouristSpots" class="btn btn-light">Cancel</a>
+        </div>
+    </form>
+</div>

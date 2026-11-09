@@ -1,0 +1,40 @@
+﻿@model IEnumerable<KarnelTravelGuide.Models.TravelInfo>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Travel Info";
+    var travelInfos = Model ?? Enumerable.Empty<KarnelTravelGuide.Models.TravelInfo>();
+}
+<div class="page-head">
+    <div><h1>Travel Info</h1><p>Manage transportation options between cities.</p></div>
+    <a href="/Admin/AddTravelInfo" class="btn btn-primary">＋ Add Travel Info</a>
+</div>
+<div class="card">
+    <div class="table-wrap">
+        <table id="travelTable">
+            <thead><tr><th>Route</th><th>From</th><th>To</th><th>Transport</th><th>Price (PKR)</th><th>Action</th></tr></thead>
+            <tbody>
+                @foreach (var item in travelInfos)
+                {
+                    <tr>
+                        <td><strong>@item.FromCity → @item.ToCity</strong></td>
+                        <td>@item.FromCity</td>
+                        <td>@item.ToCity</td>
+                        <td><span class="badge confirmed">@item.TransportType</span></td>
+                        <td>Rs. @item.Price</td>
+                        <td>
+                            <div style="display:flex;gap:8px;">
+                                <a href="/Admin/EditTravelInfo/@item.Id" style="padding:8px 12px;background:#e8f3ff;color:#1765a8;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;">✎ Update</a>
+                                <form action="/Admin/DeleteTravelInfo" method="post" onsubmit="return confirm('Delete this route?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" style="padding:8px 12px;background:#fff0ef;color:#c62828;border-radius:8px;border:1px solid #ffcccc;font-size:12px;font-weight:600;cursor:pointer;">🗑 Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!travelInfos.Any()) { <p style="padding:20px; text-align:center; color:#888;">No travel info found. Click Add Travel Info.</p> }
+    </div>
+</div>

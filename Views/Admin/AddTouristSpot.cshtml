@@ -1,0 +1,136 @@
+﻿```cshtml
+@model KarnelTravelGuide.Models.TouristSpot
+
+@{
+    ViewData["Title"] = "Add Tourist Spot";
+}
+
+<!-- Page heading aur Back button -->
+<div class="page-head">
+    <div>
+        <h1>Add Tourist Spot</h1>
+        <p>Add a new destination or tourist attraction.</p>
+    </div>
+
+    <a href="/Admin/TouristSpots" class="btn btn-light">
+        ← Back
+    </a>
+</div>
+
+<!-- New tourist spot form -->
+<div class="card">
+    <form asp-controller="Admin"
+          asp-action="AddTouristSpot"
+          method="post"
+          enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+
+        <!-- Validation errors display hongi -->
+        <div asp-validation-summary="All"
+             class="text-danger"></div>
+
+        <div class="form-grid">
+
+            <!-- Tourist spot name -->
+            <div class="form-group">
+                <label asp-for="Name">Spot Name</label>
+                <input asp-for="Name"
+                       class="form-control"
+                       placeholder="Enter spot name"
+                       required />
+                <span asp-validation-for="Name"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- City or location -->
+            <div class="form-group">
+                <label asp-for="Location">Location / City</label>
+                <input asp-for="Location"
+                       class="form-control"
+                       placeholder="Enter location"
+                       required />
+                <span asp-validation-for="Location"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Spot category -->
+            <div class="form-group">
+                <label asp-for="Category">Category</label>
+                <input asp-for="Category"
+                       class="form-control"
+                       placeholder="e.g. Beach, Monument, Valley" />
+                <span asp-validation-for="Category"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Entry fee -->
+            <div class="form-group">
+                <label asp-for="Price">Entry Fee (PKR)</label>
+                <input asp-for="Price"
+                       type="number"
+                       step="0.01"
+                       min="0"
+                       class="form-control"
+                       placeholder="Enter entry fee"
+                       required />
+                <span asp-validation-for="Price"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Rating -->
+            <div class="form-group">
+                <label asp-for="Rating">Rating (1-5)</label>
+                <input asp-for="Rating"
+                       type="number"
+                       step="0.1"
+                       min="1"
+                       max="5"
+                       class="form-control"
+                       placeholder="Enter rating" />
+                <span asp-validation-for="Rating"
+                      class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Spot Image (optional)</label>
+                <input type="file"
+                       name="ImageFile"
+                       class="form-control"
+                       accept=".jpg,.jpeg,.png,.webp" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Availability">Available?</label>
+                <div>
+                    <input asp-for="Availability" type="checkbox" />
+                </div>
+            </div>
+
+            <div class="form-group full">
+                <label asp-for="Description">
+                    Description / Notes
+                </label>
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Add additional information..."></textarea>
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <br />
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">
+                Add Tourist Spot
+            </button>
+
+            <a href="/Admin/TouristSpots" class="btn btn-light">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+</div>
+```

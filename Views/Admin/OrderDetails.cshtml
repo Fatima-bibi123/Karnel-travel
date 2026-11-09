@@ -1,0 +1,41 @@
+﻿@model KarnelTravelGuide.Models.Order
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .detail-card{background:#fff; border-radius:16px; padding:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #f0ebe0;}
+    .top-title{color:#0f3d3c; font-size:24px; font-weight:800; margin-bottom:4px;}
+    .sub-title{color:#8a9a8a; font-size:13px; margin-bottom:20px;}
+    .lbl{color:#b89a5a; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:3px;}
+    .val{color:#0f3d3c; font-size:14px; font-weight:600; margin-bottom:16px;}
+    .pill{background:#fef3c7; color:#92400e; padding:6px 14px; border-radius:20px; font-weight:800; font-size:12px;}
+    .btn1{background:#eef6f6; border:1.5px solid #0f5f5c; color:#0f5f5c; padding:8px 16px; border-radius:20px; text-decoration:none; font-weight:700; font-size:13px;}
+    .btn2{background:#f5c86e; border:1.5px solid #e9b84f; color:#3a2a00; padding:8px 16px; border-radius:20px; text-decoration:none; font-weight:800; font-size:13px;}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px 30px;}
+</style>
+
+<div class="detail-card" style="max-width:700px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="top-title">Order #KN-@Model.Id</div>
+        <div class="pill">@Model.Status</div>
+    </div>
+    <div class="sub-title">Customer order details - TravelInfo style</div>
+
+    <div class="grid2">
+        <div>
+            <div class="lbl">Customer Name</div><div class="val">@Model.FullName</div>
+            <div class="lbl">Email</div><div class="val">@Model.Email</div>
+            <div class="lbl">Phone</div><div class="val">@Model.Phone</div>
+        </div>
+        <div>
+            <div class="lbl">Location</div><div class="val">@Model.Location</div>
+            <div class="lbl">Type</div><div class="val">@Model.OrderType</div>
+            <div class="lbl">Quantity / Date</div><div class="val">@Model.Quantity / @Model.CreatedAt.ToString("yyyy-MM-dd")</div>
+        </div>
+    </div>
+
+    <div style="margin-top:20px; padding-top:20px; border-top:1px solid #f5f0e0; text-align:right;">
+        <a href="/Admin/Orders" class="btn1">Back to Orders</a>
+        <a href="/Admin/ConfirmOrder/@Model.Id" class="btn2" style="margin-left:8px;">✔ Confirm Order</a>
+    </div>
+</div>

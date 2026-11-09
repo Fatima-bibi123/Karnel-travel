@@ -1,0 +1,424 @@
+﻿@{
+    ViewData["Title"] = "Advanced Search";
+    var hasSearched = ViewBag.HasSearched != null && (bool)ViewBag.HasSearched;
+    var hotels = ViewBag.Hotels as List<Hotel>;
+    var restaurants = ViewBag.Restaurants as List<Restaurant>;
+    var resorts = ViewBag.Resorts as List<Resort>;
+    var spots = ViewBag.TouristSpots as List<TouristSpot>;
+    int totalResults = (hotels?.Count ?? 0) + (restaurants?.Count ?? 0) + (resorts?.Count ?? 0) + (spots?.Count ?? 0);
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    body {
+        background: #f6f9f9;
+    }
+
+    .hero-header {
+        background: linear-gradient(105deg, rgba(7,60,60,0.92) 0%, rgba(10,92,92,0.75) 50%, rgba(10,92,92,0.3) 100%), url('https://images.pexels.com/photos/3935702/pexels-photo-3935702.jpeg?auto=compress&cs=tinysrgb&w=1260');
+        background-size: cover;
+        background-position: center;
+        padding: 150px 0 190px;
+    }
+
+        .hero-header h1 {
+            color: #fff;
+            font-size: 54px;
+            font-weight: 900;
+            font-family: 'Georgia', serif;
+        }
+
+        .hero-header p {
+            color: #d1e7e7;
+            font-size: 18px;
+            max-width: 650px;
+            margin-top: 10px;
+        }
+
+    .hero-badge {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        padding: 7px 16px;
+        border-radius: 50px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 14px;
+    }
+
+    .filter-wrapper {
+        margin-top: -110px;
+        position: relative;
+        z-index: 20;
+    }
+
+    .filter-card {
+        background: #fff;
+        border-radius: 26px;
+        padding: 30px 32px;
+        box-shadow: 0 20px 70px rgba(0,0,0,0.13);
+        border: 1px solid #e8efef;
+    }
+
+    .filter-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+    }
+
+        .filter-head h3 {
+            color: #0a5c5c;
+            font-family: Georgia, serif;
+            font-weight: 800;
+            font-size: 21px;
+            margin: 0;
+        }
+
+        .filter-head span {
+            background: #e6f2f2;
+            color: #0a5c5c;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+    .field label {
+        font-weight: 800;
+        font-size: 11px;
+        letter-spacing: 0.8px;
+        color: #6b7f8a;
+        text-transform: uppercase;
+        margin-bottom: 7px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .field .form-control, .field .form-select {
+        height: 52px;
+        border-radius: 13px;
+        border: 1.8px solid #e1eaea;
+        background: #fbfdfd;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+        .field .form-control:focus, .field .form-select:focus {
+            border-color: #0a5c5c;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(10,92,92,0.1);
+        }
+
+    .btn-apply {
+        background: linear-gradient(135deg, #0a5c5c 0%, #0e7a7a 100%);
+        color: #fff;
+        border: none;
+        height: 52px;
+        border-radius: 13px;
+        font-weight: 800;
+        font-size: 14px;
+        box-shadow: 0 10px 25px rgba(10,92,92,0.25);
+    }
+
+        .btn-apply:hover {
+            transform: translateY(-1px);
+            color: #fff;
+        }
+
+    .btn-soft {
+        background: #f1f6f6;
+        border: 1.5px solid #dde8e8;
+        height: 52px;
+        border-radius: 13px;
+        font-weight: 700;
+        color: #0a5c5c;
+    }
+
+    .stats-card {
+        background: linear-gradient(135deg, #e6f4f3 0%, #f0f8f7 100%);
+        border: 1.5px solid #cfe6e5;
+        border-radius: 16px;
+        padding: 16px 22px;
+    }
+
+    .pill {
+        background: #fff;
+        border: 1px solid #d5e5e4;
+        border-radius: 50px;
+        padding: 5px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #2c4a4a;
+    }
+
+    .section-title {
+        font-family: Georgia, serif;
+        font-weight: 800;
+        font-size: 21px;
+        color: #0a3c3c;
+        margin: 36px 0 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .section-title span {
+            background: #0a5c5c;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+    .result-card {
+        background: #fff;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid #e8efef;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        transition: 0.3s;
+        height: 100%;
+    }
+
+        .result-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.11);
+        }
+
+    .img-wrap {
+        position: relative;
+        overflow: hidden;
+        height: 200px;
+    }
+
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .img-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(255,255,255,0.92);
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #0a5c5c;
+    }
+
+    .img-rating {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: #0a5c5c;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+        .card-body h6 {
+            font-weight: 800;
+            font-size: 14px;
+            color: #132f2f;
+            margin-bottom: 5px;
+        }
+
+        .card-body .meta {
+            font-size: 11px;
+            color: #7a8f8f;
+            margin-bottom: 10px;
+        }
+
+    .price {
+        background: #0a5c5c;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 12px;
+    }
+
+    .avail-yes {
+        background: #e6f6ec;
+        color: #0a7a3c;
+        border: 1px solid #bde8c8;
+        padding: 3px 9px;
+        border-radius: 50px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .avail-no {
+        background: #fde8e8;
+        color: #a83232;
+        border: 1px solid #f0b8b8;
+        padding: 3px 9px;
+        border-radius: 50px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .empty-box {
+        background: #fff;
+        border: 2px dashed #d5e5e4;
+        border-radius: 20px;
+        padding: 50px 30px;
+        text-align: center;
+    }
+</style>
+
+<section class="hero-header">
+    <div class="container">
+        <div class="hero-badge"><i class="fas fa-magnifying-glass"></i> Requirement Point #5 • Advanced Search</div>
+        <h1>Advanced Search</h1>
+        <p>Search tourist spots, hotels, restaurants & resorts by location, price, quality, quantity and availability as per Karnel Travel Guide requirement.</p>
+    </div>
+</section>
+
+<div class="container filter-wrapper pb-5">
+    <div class="filter-card">
+        <div class="filter-head">
+            <h3><i class="fas fa-sliders-h"></i> Advanced Filters</h3>
+            <span><i class="fas fa-bolt"></i> @totalResults Results</span>
+        </div>
+        <form asp-action="AdvancedSearch" method="get">
+            <div class="row g-3">
+                <div class="col-lg-2 col-md-4 field">
+                    <label><i class="fas fa-location-dot"></i> Location</label>
+                    <select name="location" class="form-select">
+                        <option value="">All Locations</option>
+                        <option value="Karachi" selected="@(ViewBag.Location == "Karachi")">Karachi</option>
+                        <option value="Lahore" selected="@(ViewBag.Location == "Lahore")">Lahore</option>
+                        <option value="Islamabad" selected="@(ViewBag.Location == "Islamabad")">Islamabad</option>
+                        <option value="Hunza Valley" selected="@(ViewBag.Location == "Hunza Valley")">Hunza Valley</option>
+                        <option value="Murree" selected="@(ViewBag.Location == "Murree")">Murree</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4 field">
+                    <label><i class="fas fa-layer-group"></i> Category</label>
+                    <select name="category" class="form-select">
+                        <option value="All" selected="@(ViewBag.Category == "All")">All Categories</option>
+                        <option value="Hotel" selected="@(ViewBag.Category == "Hotel")">Hotels</option>
+                        <option value="Restaurant" selected="@(ViewBag.Category == "Restaurant")">Restaurants</option>
+                        <option value="Resort" selected="@(ViewBag.Category == "Resort")">Resorts</option>
+                        <option value="TouristSpot" selected="@(ViewBag.Category == "TouristSpot")">Tourist Spots</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4 field">
+                    <label><i class="fas fa-arrow-down"></i> Min Price</label>
+                    <input type="number" name="minPrice" class="form-control" placeholder="0" value="@ViewBag.MinPrice" />
+                </div>
+                <div class="col-lg-2 col-md-4 field">
+                    <label><i class="fas fa-arrow-up"></i> Max Price</label>
+                    <input type="number" name="maxPrice" class="form-control" placeholder="50000" value="@ViewBag.MaxPrice" />
+                </div>
+                <div class="col-lg-1 col-md-2 field">
+                    <label><i class="fas fa-star"></i> Quality</label>
+                    <select name="minRating" class="form-select">
+                        <option value="">Any</option>
+                        <option value="5" selected="@(ViewBag.MinRating == 5)">5★</option>
+                        <option value="4" selected="@(ViewBag.MinRating == 4)">4★+</option>
+                        <option value="3" selected="@(ViewBag.MinRating == 3)">3★+</option>
+                    </select>
+                </div>
+                <div class="col-lg-1 col-md-2 field">
+                    <label><i class="fas fa-hashtag"></i> Qty</label>
+                    <input type="number" name="qty" class="form-control" placeholder="5" value="@ViewBag.Qty" min="1" />
+                </div>
+                <div class="col-lg-2 col-md-4 field">
+                    <label><i class="fas fa-circle-check"></i> Availability</label>
+                    <select name="availableOnly" class="form-select">
+                        <option value="">All</option>
+                        <option value="true" selected="@(ViewBag.AvailableOnly == true)">Available Only</option>
+                    </select>
+                </div>
+                <div class="col-12 d-flex gap-2 mt-2">
+                    <button type="submit" class="btn btn-apply flex-grow-1"><i class="fas fa-search"></i> Search Now - Requirement #5</button>
+                    <a href="@Url.Action("AdvancedSearch", "Home")" class="btn btn-soft"><i class="fas fa-rotate"></i> Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (hasSearched)
+    {
+        <div class="mt-4 stats-card d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <h5 style="font-family:Georgia, serif; font-weight:800; color:#0a3c3c; margin:0;"><i class="fas fa-map-location-dot" style="color:#0a5c5c;"></i> @totalResults Results @(ViewBag.Location != null ? $"in {ViewBag.Location}" : "")</h5>
+                <div class="mt-2 d-flex flex-wrap gap-2">
+                    <span class="pill">@ViewBag.Category</span>
+                    <span class="pill">@(ViewBag.MinPrice != null ? ViewBag.MinPrice.ToString() : "0") - @(ViewBag.MaxPrice != null ? ViewBag.MaxPrice.ToString() : "∞")</span>
+                    <span class="pill">@(ViewBag.MinRating != null ? $"{ViewBag.MinRating}+ Star" : "Any Quality")</span>
+                </div>
+            </div>
+        </div>
+
+        @if (totalResults == 0)
+        {
+            <div class="empty-box mt-4">
+                <i class="fas fa-magnifying-glass" style="font-size:28px;color:#0a5c5c;"></i>
+                <h5 style="font-weight:800;font-family:Georgia, serif;" class="mt-3">No exact match found</h5>
+                <p class="text-muted small">Hotels ke liye 7000-50000, Spots ke liye 0-2000 try karo. Order ke liye Contact Us page pe jao (Point #10).</p>
+            </div>
+        }
+
+        @if (spots != null && spots.Any())
+        {
+            <div class="section-title"><span><i class="fas fa-mountain-sun"></i></span> Tourist Spots - @spots.Count</div>
+            <div class="row g-4">@foreach(var s in spots){
+                <div class="col-lg-3 col-md-6"><div class="result-card"><div class="img-wrap"><img src="@s.ImageUrl" /><div class="img-badge">@s.Category</div><div class="img-rating"><i class="fas fa-star"></i> @s.Rating</div></div><div class="card-body"><h6>@s.Name</h6><div class="meta"><i class="fas fa-location-dot"></i> @s.Location</div><div class="d-flex justify-content-between align-items-center"><span class="price">PKR @s.Price</span><a href="/Home/TouristSpots" class="pill" style="text-decoration:none;">View Details <i class="fas fa-arrow-right"></i></a></div></div></div></div>
+            }
+        </div>
+    }
+    @if (hotels != null && hotels.Any())
+    {
+        <div class="section-title"><span><i class="fas fa-hotel"></i></span> Hotels - @hotels.Count</div>
+        <div class="row g-4">@foreach(var h in hotels){
+            <div class="col-lg-3 col-md-6"><div class="result-card"><div class="img-wrap"><img src="@h.ImageUrl" /><div class="img-badge">@h.City</div><div class="img-rating"><i class="fas fa-star"></i> @h.Rating</div></div><div class="card-body"><h6>@h.Name</h6><div class="meta"><i class="fas fa-bed"></i> @h.City</div><div class="d-flex justify-content-between align-items-center"><span class="price">PKR @h.PricePerNight / night</span><a href="/Home/Hotels" class="pill" style="text-decoration:none;">View Details <i class="fas fa-arrow-right"></i></a></div></div></div></div>
+        }
+    </div>
+}
+@if (restaurants != null && restaurants.Any())
+{
+    <div class="section-title"><span><i class="fas fa-utensils"></i></span> Restaurants - @restaurants.Count</div>
+    <div class="row g-4">@foreach(var r in restaurants){
+        <div class="col-lg-3 col-md-6"><div class="result-card"><div class="img-wrap"><img src="@r.ImageUrl" /><div class="img-badge">@r.Cuisine</div><div class="img-rating"><i class="fas fa-star"></i> @r.Rating</div></div><div class="card-body"><h6>@r.Name</h6><div class="meta"><i class="fas fa-location-dot"></i> @r.City</div><div class="d-flex justify-content-between align-items-center"><span class="price">PKR @r.Price</span>@if(r.Availability){
+            <span class="avail-yes">● Available</span>
+        }else
+        {
+
+            <span class="avail-no">● Full</span>
+        }
+    </div><div class="mt-2"><a href="/Home/Restaurants" class="pill w-100 text-center d-block" style="text-decoration:none;">View Details <i class="fas fa-arrow-right"></i></a></div></div></div></div>
+}
+</div>
+        }
+        @if (resorts != null && resorts.Any())
+{
+    <div class="section-title"><span><i class="fas fa-umbrella-beach"></i></span> Resorts - @resorts.Count</div>
+    <div class="row g-4">@foreach(var res in resorts){
+        <div class="col-lg-3 col-md-6"><div class="result-card"><div class="img-wrap"><img src="@res.ImageUrl" /><div class="img-badge">@res.City</div><div class="img-rating"><i class="fas fa-star"></i> @res.Rating</div></div><div class="card-body"><h6>@res.Name</h6><div class="meta">@res.City • Beach Resort</div><div class="d-flex justify-content-between align-items-center"><span class="price">PKR @res.Price</span><a href="/Home/Resorts" class="pill" style="text-decoration:none;">View Details <i class="fas fa-arrow-right"></i></a></div></div></div></div>
+    }
+</div>
+        }
+<div class="mt-5 p-3 text-center rounded-3" style="background:#fff;border:1px solid #cfe6e5;">
+    <small class="text-muted"><i class="fas fa-info-circle"></i> For placing an order, go to <a href="/Home/Contact" style="color:#0a5c5c;font-weight:800;">Contact Us Page</a> as per Requirement Point #10</small>
+</div>
+    }
+</div>

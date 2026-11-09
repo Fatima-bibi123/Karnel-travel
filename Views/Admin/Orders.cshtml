@@ -1,0 +1,63 @@
+﻿@model IEnumerable<KarnelTravelGuide.Models.Order>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Orders";
+}
+<style>
+    .order-card{background:#fff; border-radius:16px; padding:20px; box-shadow:0 4px 20px rgba(0,0,0,.05); border:1px solid #f0ebe0;}
+    .filter-input{padding:8px 14px; border-radius:20px; border:1px solid #e5e0d0; outline:none; font-size:13px; background:#fff;}
+    .th-style{color:#a68a5a; font-size:11px; text-transform:uppercase; letter-spacing:1px; text-align:left; padding:12px; border-bottom:1px solid #f5f0e0;}
+    .td-style{padding:14px 12px; font-size:13.5px; border-bottom:1px solid #faf6ef; color:#333;}
+    .status-pill{background:#f5c86e; color:#3a2a00; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:800; border:1px solid #e9b84f;}
+    .btn-view{display:inline-flex; align-items:center; gap:5px; padding:6px 13px; border-radius:20px; border:1.5px solid #0f5f5c; background:#eef6f6; color:#0f5f5c; font-size:11px; font-weight:700; text-decoration:none;}
+    .btn-confirm{display:inline-flex; align-items:center; gap:5px; padding:6px 13px; border-radius:20px; border:1.5px solid #e9b84f; background:#f5c86e; color:#3a2a00; font-size:11px; font-weight:800; text-decoration:none;}
+    .btn-del{display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; border:1px solid #e9d9b0; background:#fdf6e3; color:#8a6a2e; text-decoration:none;}
+</style>
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div><h1 style="margin:0; color:#0f3d3c; font-size:26px; font-weight:800;">Orders</h1><p style="margin:4px 0 0; color:#8a9a8a; font-size:13px;">Manage and review customer orders</p></div>
+    <a href="/Admin/AddOrder" style="background:#f5c86e; color:#3a2a00; padding:9px 18px; border-radius:20px; text-decoration:none; font-weight:800; font-size:13px;">+ Add Order</a>
+</div>
+
+<div class="order-card">
+    <div style="display:flex; gap:10px; margin-bottom:18px;">
+        <input type="text" id="searchInput" placeholder="Search orders..." class="filter-input" style="width:220px;" onkeyup="filterTable()" />
+        <select id="statusFilter" class="filter-input" onchange="filterTable()"><option value="">All Status</option><option value="Hotel">Hotel Booking</option><option value="Resort">Resort</option><option value="Confirmed">Confirmed</option></select>
+        <select id="locationFilter" class="filter-input" onchange="filterTable()"><option value="">All Locations</option><option value="karachi">karachi</option><option value="islamabad">islamabad</option><option value="lahore">lahore</option></select>
+    </div>
+
+    <table style="width:100%; border-collapse:collapse;">
+        <thead><tr><th class="th-style">ORDER ID</th><th class="th-style">CUSTOMER</th><th class="th-style">DATE</th><th class="th-style">AMOUNT</th><th class="th-style">STATUS</th><th class="th-style" style="text-align:right;">ACTIONS</th></tr></thead>
+        <tbody id="ordersBody">
+            @foreach (var item in Model.OrderByDescending(x => x.CreatedAt))
+            {
+                <tr class="order-row">
+                    <td class="td-style" style="font-weight:700; color:#0f5f5c;">#KN-@item.Id</td>
+                    <td class="td-style"><div style="font-weight:700;">@item.FullName</div><div style="font-size:11px; color:#888;">@item.Email • @item.Location</div></td>
+                    <td class="td-style">@item.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td class="td-style">Qty: <b>@item.Quantity</b></td>
+                    <td class="td-style"><span class="status-pill">@item.Status</span></td>
+                    <td class="td-style" style="text-align:right;">
+                        <div style="display:flex; gap:6px; justify-content:flex-end; align-items:center;">
+                            <a href="/Admin/ViewOrder/@item.Id" class="btn-view">◎ View</a>
+                            <a href="/Admin/ConfirmOrder/@item.Id" class="btn-confirm">✔ Confirm</a>
+                            <a href="/Admin/DeleteOrder/@item.Id" onclick="return confirm('Delete this order?')" class="btn-del">🗑</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+function filterTable(){
+    var s=document.getElementById('searchInput').value.toLowerCase();
+    var st=document.getElementById('statusFilter').value.toLowerCase();
+    var lo=document.getElementById('locationFilter').value.toLowerCase();
+    document.querySelectorAll('.order-row').forEach(r=>{
+        var t=r.innerText.toLowerCase();
+        r.style.display=(t.includes(s) && (st==""||t.includes(st)) && (lo==""||t.includes(lo)))?"":"none";
+    });
+}
+</script>

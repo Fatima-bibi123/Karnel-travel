@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Settings";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div style="background:#e8f5e9;color:#2e7d32;padding:12px 18px;border-radius:10px;margin-bottom:15px;border:1px solid #c8e6c9;">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div style="background:#ffebee;color:#c62828;padding:12px 18px;border-radius:10px;margin-bottom:15px;border:1px solid #ffcdd2;">@TempData["ErrorMessage"]</div>
+}
+
+<div class="page-head">
+    <div>
+        <h1>Settings</h1>
+        <p>Manage your admin account and system preferences.</p>
+    </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+    
+    <!-- Profile Settings -->
+    <div class="card" style="padding:25px;">
+        <h3 style="margin-bottom:15px; color:#0a4a42;">Admin Profile</h3>
+        <form asp-action="SaveProfile" method="post">
+            @Html.AntiForgeryToken()
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Admin Name</label>
+                <input type="text" name="AdminName" value="Admin" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;" required />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Email</label>
+                <input type="email" name="Email" value="admin@karneltravel.com" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;" required />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Role</label>
+                <input type="text" value="Administrator" disabled style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;background:#f5f5f5;" />
+            </div>
+            <button type="submit" style="margin-top:10px;padding:10px 20px;background:#0a4a42;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Save Profile</button>
+        </form>
+    </div>
+
+    <!-- System Settings -->
+    <div class="card" style="padding:25px;">
+        <h3 style="margin-bottom:15px; color:#0a4a42;">System Settings</h3>
+        <form asp-action="UpdateSystem" method="post">
+            @Html.AntiForgeryToken()
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Website Name</label>
+                <input type="text" name="WebsiteName" value="Karnel Travel Guide" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;" />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Contact Email</label>
+                <input type="email" name="ContactEmail" value="support@karneltravel.com" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;" />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Currency</label>
+                <select name="Currency" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;">
+                    <option>PKR - Pakistani Rupee</option>
+                    <option>USD - Dollar</option>
+                </select>
+            </div>
+            <button type="submit" style="margin-top:10px;padding:10px 20px;background:#f7c948;color:#0a4a42;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Update System</button>
+        </form>
+    </div>
+
+    <!-- Change Password -->
+    <div class="card" style="padding:25px;">
+        <h3 style="margin-bottom:15px; color:#c62828;">Change Password</h3>
+        <form asp-action="ChangePassword" method="post">
+            @Html.AntiForgeryToken()
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Current Password</label>
+                <input type="password" name="CurrentPassword" placeholder="••••••••" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;" required />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">New Password</label>
+                <input type="password" name="NewPassword" placeholder="New password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;" required />
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="font-size:13px;font-weight:600;">Confirm Password</label>
+                <input type="password" name="ConfirmPassword" placeholder="Confirm password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:5px;" required />
+            </div>
+            <button type="submit" style="margin-top:10px;padding:10px 20px;background:#c62828;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Change Password</button>
+        </form>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="card" style="padding:25px; border:1px solid #ffcdd2;">
+        <h3 style="margin-bottom:15px; color:#c62828;">Danger Zone</h3>
+        <p style="font-size:13px;color:#666;margin-bottom:15px;">Clear all temporary files and cache from uploads.</p>
+        <form asp-action="ClearCache" method="post" style="display:inline;">
+            @Html.AntiForgeryToken()
+            <button type="submit" onclick="return confirm('Are you sure?')" style="padding:10px 20px;background:#fff0ef;color:#c62828;border:1px solid #ffcdd2;border-radius:8px;font-weight:600;cursor:pointer;">Clear Cache</button>
+        </form>
+        <a href="/Admin/Logout" onclick="return confirm('Logout?')" style="margin-left:10px;padding:10px 20px;background:#0a4a42;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;">Logout</a>
+    </div>
+</div>

@@ -1,0 +1,509 @@
+@{
+    // Set the page title for the browser and layout.
+    ViewData["Title"] = "Contact Us";
+}
+
+<style>
+    /* Hero banner at the top of the Contact page */
+    .hero-contact {
+        background: linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.40)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600');
+        background-size: cover;
+        background-position: center 65%;
+        height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+    }
+
+    /* Gentle floating animation for the three contact cards */
+    @@keyframes cardFloat {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+
+    /* Address, Call Us and Email Us card styling */
+    .info-card-top {
+        background: #fff;
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        border: 2px solid #eef2f2;
+        height: 100%;
+        cursor: pointer;
+        animation: cardFloat 3s ease-in-out infinite;
+        transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+        /* Stagger the floating animation slightly between cards */
+        .info-card-top.delay-1 {
+            animation-delay: 0.4s;
+        }
+
+        .info-card-top.delay-2 {
+            animation-delay: 0.8s;
+        }
+
+        /* Lift the card gently on hover instead of rotating it */
+        .info-card-top:hover {
+            animation-play-state: paused;
+            transform: translateY(-10px) scale(1.02);
+            border-color: #0f766e;
+            box-shadow: 0 15px 35px rgba(15,118,110,0.18);
+        }
+
+        /* Contact card heading */
+        .info-card-top h5 {
+            color: #0f766e;
+            font-weight: 700;
+            font-family: Georgia, serif;
+            transition: color 0.3s ease;
+        }
+
+        .info-card-top:hover h5 {
+            color: #d4a017;
+        }
+
+    /* Contact icons */
+    .contact-icon {
+        display: inline-block;
+        font-size: 30px;
+        transition: transform 0.4s ease;
+    }
+
+    .info-card-top:hover .contact-icon {
+        transform: scale(1.2) rotate(-8deg);
+    }
+
+    /* Animated border container for forms */
+    .form-card-vip {
+        position: relative;
+        background: #fff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        overflow: hidden;
+        border: 1px solid #eef2f2;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+        /* Decorative animated border lines */
+        .form-card-vip span {
+            position: absolute;
+            display: block;
+            pointer-events: none;
+        }
+
+            .form-card-vip span:nth-child(1) {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(90deg, transparent, #0f766e, #14b8a6);
+                animation: animate1 2s linear infinite;
+            }
+
+            .form-card-vip span:nth-child(2) {
+                top: 0;
+                right: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(180deg, transparent, #0f766e, #14b8a6);
+                animation: animate2 2s linear infinite;
+                animation-delay: 0.5s;
+            }
+
+            .form-card-vip span:nth-child(3) {
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(270deg, transparent, #d4a017, #f59e0b);
+                animation: animate3 2s linear infinite;
+                animation-delay: 1s;
+            }
+
+            .form-card-vip span:nth-child(4) {
+                bottom: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(360deg, transparent, #d4a017, #f59e0b);
+                animation: animate4 2s linear infinite;
+                animation-delay: 1.5s;
+            }
+
+    /* Animation for the top border */
+    @@keyframes animate1 {
+        0% {
+            left: -100%;
+        }
+
+        50%, 100% {
+            left: 100%;
+        }
+    }
+
+    /* Animation for the right border */
+    @@keyframes animate2 {
+        0% {
+            top: -100%;
+        }
+
+        50%, 100% {
+            top: 100%;
+        }
+    }
+
+    /* Animation for the bottom border */
+    @@keyframes animate3 {
+        0% {
+            right: -100%;
+        }
+
+        50%, 100% {
+            right: 100%;
+        }
+    }
+
+    /* Animation for the left border */
+    @@keyframes animate4 {
+        0% {
+            bottom: -100%;
+        }
+
+        50%, 100% {
+            bottom: 100%;
+        }
+    }
+
+    /* Lift form cards slightly on hover */
+    .form-card-vip:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(15,118,110,0.20);
+    }
+
+    /* Input and textarea styling */
+    .vip-input-2 {
+        border: 2px solid #eef2f2 !important;
+        border-radius: 10px !important;
+        padding: 12px 15px !important;
+    }
+
+        .vip-input-2:focus {
+            border-color: #0f766e !important;
+            box-shadow: 0 0 0 4px rgba(15,118,110,0.1) !important;
+        }
+
+    /* Form submit buttons */
+    .btn-vip {
+        background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 12px !important;
+        font-weight: 600 !important;
+        color: white !important;
+    }
+
+        .btn-vip:hover {
+            background: linear-gradient(135deg, #0b5f59, #0f766e) !important;
+        }
+
+    /* Responsive styling for small screens */
+    @@media (max-width: 767px) {
+        .hero-contact {
+            height: 210px;
+            padding: 20px;
+        }
+
+            .hero-contact h1 {
+                font-size: 30px !important;
+            }
+
+        .form-card-vip {
+            padding: 22px 18px;
+        }
+    }
+
+    /* Disable movement for users who prefer reduced motion */
+    @@media (prefers-reduced-motion: reduce) {
+        .info-card-top,
+        .form-card-vip span {
+            animation: none;
+        }
+
+        .info-card-top,
+        .form-card-vip,
+        .contact-icon {
+            transition: none;
+        }
+
+            .info-card-top:hover,
+            .form-card-vip:hover {
+                transform: none;
+            }
+
+                .info-card-top:hover .contact-icon {
+                    transform: none;
+                }
+    }
+</style>
+
+<!-- Contact page hero banner -->
+<div class="hero-contact">
+    <h1 style="font-family: Georgia, serif; font-weight: 800; font-size: 38px;">
+        Contact Us
+    </h1>
+    <p style="opacity:0.9; margin-top:6px;">
+        We'd love to hear from you - KarnelTravelGuide.com
+    </p>
+</div>
+
+<div class="container" style="max-width:1100px; margin-top:35px; margin-bottom:50px;">
+
+    <!-- Contact information cards -->
+    <div class="row g-4 mb-4">
+
+        <!-- Address card -->
+        <div class="col-md-4">
+            <div class="info-card-top">
+                <div class="contact-icon">📍</div>
+                <h5 class="mt-2">Our Address</h5>
+                <div class="text-muted small mt-2">
+                    Main Boulevard, Gulberg III<br />
+                    Lahore, Pakistan
+                </div>
+            </div>
+        </div>
+
+        <!-- Phone card -->
+        <div class="col-md-4">
+            <div class="info-card-top delay-1">
+                <div class="contact-icon">📞</div>
+                <h5 class="mt-2">Call Us</h5>
+                <div class="text-muted small mt-2">
+                    +92 300 1234567
+                </div>
+            </div>
+        </div>
+
+        <!-- Email card -->
+        <div class="col-md-4">
+            <div class="info-card-top delay-2">
+                <div class="contact-icon">✉️</div>
+                <h5 class="mt-2">Email Us</h5>
+                <div class="text-muted small mt-2">
+                    info@karneltravelguide.com
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Order form for hotel, restaurant, resort and tour bookings -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="form-card-vip">
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <h3 style="font-family: Georgia, serif; font-weight:700;">
+                    Place Your Order
+                </h3>
+
+                <p class="text-muted small">
+                    For booking hotels, restaurants, resorts &amp; tour packages
+                </p>
+
+                @if (TempData["OrderSuccess"] != null)
+                {
+                    <div class="alert alert-success mt-2">
+                        @TempData["OrderSuccess"]
+                    </div>
+                }
+
+                <form asp-controller="Home" asp-action="PlaceOrder" method="post" class="mt-3">
+                    @Html.AntiForgeryToken()
+
+                    <div class="row g-3">
+
+                        <div class="col-md-4">
+                            <label class="form-label small">Full Name</label>
+                            <input name="FullName" class="form-control vip-input-2" required />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small">Email</label>
+                            <input name="Email" type="email" class="form-control vip-input-2" required />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small">Phone</label>
+                            <input name="Phone" class="form-control vip-input-2" required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small">Order For</label>
+                            <select name="OrderType" class="form-select vip-input-2" required>
+                                <option value="">Select</option>
+                                <option>Hotel Booking</option>
+                                <option>Restaurant Booking</option>
+                                <option>Resort Booking</option>
+                                <option>Tourist Spot Package</option>
+                                <option>Transportation</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small">Location</label>
+                            <input name="Location" class="form-control vip-input-2"
+                                   placeholder="Lahore / Karachi" required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small">Check-in Date</label>
+                            <input name="CheckInDate" type="date" class="form-control vip-input-2" required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label small">No. of Persons / Qty</label>
+                            <input name="Quantity" type="number" min="1"
+                                   class="form-control vip-input-2" required />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small">Order Details</label>
+                            <textarea name="Details" rows="3" class="form-control vip-input-2"
+                                      placeholder="Example: Need hotel near beach, 2 rooms..." required></textarea>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-vip w-100 mt-3">
+                        Place Order Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message and feedback forms -->
+    <div class="row g-4">
+
+        <!-- Send message form -->
+        <div class="col-lg-6">
+            <div class="form-card-vip">
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <h3 style="font-family: Georgia, serif; font-weight:700;">
+                    Send Us a Message
+                </h3>
+
+                @if (TempData["ContactSuccess"] != null)
+                {
+                    <div class="alert alert-success mt-2">
+                        @TempData["ContactSuccess"]
+                    </div>
+                }
+
+                <form asp-controller="Home" asp-action="SendMessage" method="post" class="mt-3">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label small">Full Name</label>
+                        <input name="FullName" class="form-control vip-input-2" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Email</label>
+                        <input name="Email" type="email" class="form-control vip-input-2" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Subject</label>
+                        <input name="Subject" class="form-control vip-input-2" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Message</label>
+                        <textarea name="Message" rows="4" class="form-control vip-input-2" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-vip w-100">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Feedback form -->
+        <div class="col-lg-6">
+            <div class="form-card-vip feedback">
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <h3 style="font-family: Georgia, serif; font-weight:700;">
+                    Share Your Feedback
+                </h3>
+
+                @if (TempData["FeedbackSuccess"] != null)
+                {
+                    <div class="alert alert-success mt-2">
+                        @TempData["FeedbackSuccess"]
+                    </div>
+                }
+
+                <form asp-controller="Home" asp-action="SendFeedback" method="post" class="mt-3">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label small">Your Name</label>
+                        <input name="Name" class="form-control vip-input-2" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Email</label>
+                        <input name="Email" type="email" class="form-control vip-input-2" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Rating</label>
+                        <select name="Rating" class="form-select vip-input-2">
+                            <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                            <option value="4">⭐⭐⭐⭐ Good</option>
+                            <option value="3">⭐⭐⭐ Average</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Feedback</label>
+                        <textarea name="Message" rows="4" class="form-control vip-input-2" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-vip w-100">
+                        Submit Feedback
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

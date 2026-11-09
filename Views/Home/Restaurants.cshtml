@@ -1,0 +1,54 @@
+
+@model IEnumerable<Restaurant>
+
+@{
+    ViewData["Title"] = "Restaurants";
+}
+
+<!-- ==================== PAGE HEADER ==================== -->
+<section class="page-header" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/12181619/pexels-photo-12181619.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');">
+    <div class="container">
+        <div class="page-header-content text-center" data-aos="fade-up">
+            <h1>Restaurants</h1>
+            <p>Taste the flavors of Pakistan at the finest dining spots</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== RESTAURANTS GRID ==================== -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var restaurant in Model)
+            {
+                <!-- Restaurant card with cuisine type and rating -->
+                <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-delay="100">
+                    <div class="card restaurant-card">
+                        <div class="card-image-wrapper">
+                            <img src="@restaurant.ImageUrl" class="card-img-top" alt="@restaurant.Name" loading="lazy" />
+                            <span class="cuisine-badge">@restaurant.Cuisine</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@restaurant.Name</h5>
+                            <p class="card-location"><i class="fas fa-map-marker-alt me-1"></i>@restaurant.City</p>
+                            <div class="rating-stars">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= restaurant.Rating)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star"></i>
+                                    }
+                                }
+                                <span class="rating-number">@restaurant.Rating.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

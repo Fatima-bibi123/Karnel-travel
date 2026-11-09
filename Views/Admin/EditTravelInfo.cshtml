@@ -1,0 +1,65 @@
+﻿@model KarnelTravelGuide.Models.TravelInfo
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Update Travel Info";
+}
+<div class="page-head">
+    <div><h1>Update Travel Info</h1><p>Edit transportation route details.</p></div>
+    <a href="/Admin/TravelInfo" class="btn btn-light">← Back</a>
+</div>
+<div class="card" style="padding:20px;">
+    <form asp-action="EditTravelInfo" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (ViewBag.FormErrors != null)
+        {
+            <div class="alert alert-danger" style="background:#fff0ef; padding:10px; border-radius:8px;">
+                <ul style="margin:0;">@foreach (var e in ViewBag.FormErrors) { <li style="color:#c62828;">@e</li> }</ul>
+            </div>
+        }
+        <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+            <div class="form-group">
+                <label asp-for="FromCity">From City</label>
+                <select asp-for="FromCity" class="form-control" required>
+                    <option value="Karachi">Karachi</option>
+                    <option value="Lahore">Lahore</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="Hunza Valley">Hunza Valley</option>
+                    <option value="Murree">Murree</option>
+                    <option value="Skardu">Skardu</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToCity">To City</label>
+                <select asp-for="ToCity" class="form-control" required>
+                    <option value="Karachi">Karachi</option>
+                    <option value="Lahore">Lahore</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="Hunza Valley">Hunza Valley</option>
+                    <option value="Murree">Murree</option>
+                    <option value="Skardu">Skardu</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="TransportType">Transport Type</label>
+                <select asp-for="TransportType" class="form-control" required>
+                    <option value="Bus">Bus</option>
+                    <option value="Train">Train</option>
+                    <option value="Flight">Flight</option>
+                    <option value="Car">Car</option>
+                    <option value="Jeep">Jeep</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price">Price (PKR)</label>
+                <input asp-for="Price" type="number" step="0.01" min="0" class="form-control" required />
+            </div>
+        </div>
+        <br />
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="/Admin/TravelInfo" class="btn btn-light">Cancel</a>
+        </div>
+    </form>
+</div>

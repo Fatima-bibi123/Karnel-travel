@@ -1,0 +1,144 @@
+﻿@model IEnumerable<KarnelTravelGuide.Models.Restaurant>
+
+@{
+    ViewData["Title"] = "Restaurants";
+    var restaurants = Model ?? Enumerable.Empty<KarnelTravelGuide.Models.Restaurant>();
+}
+
+<div class="page-head">
+    <div>
+        <h1>Restaurants</h1>
+        <p>Manage restaurants and dining listings.</p>
+    </div>
+
+    <a href="/Admin/AddRestaurant" class="btn btn-primary">
+        ＋ Add Restaurant
+    </a>
+</div>
+
+<div class="card">
+    <div class="filters">
+        <input type="text"
+               placeholder="Search restaurants..."
+               id="pageSearch"
+               oninput="filterRestaurants()">
+
+        <select id="statusFilter" onchange="filterRestaurants()">
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="unavailable">Unavailable</option>
+        </select>
+
+        <button type="button"
+                class="btn btn-light"
+                onclick="filterRestaurants()">
+            Filter
+        </button>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" style="margin: 12px;">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" style="margin: 12px;">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="table-wrap">
+        <table id="restaurantsTable">
+            <thead>
+                <tr>
+                    <th>Restaurant</th>
+                    <th>Location</th>
+                    <th>Cuisine</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var restaurant in restaurants)
+                {
+                    <tr>
+                        <td>@restaurant.Name</td>
+                        <td>@restaurant.City</td>
+                        <td>@restaurant.Cuisine</td>
+                        <td>@restaurant.Rating ★</td>
+
+                        <td>
+                            @if (restaurant.Availability)
+                            {
+                                <span class="badge confirmed">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge">Unavailable</span>
+                            }
+                        </td>
+
+                        <td>
+                            <div class="actions" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+
+                                <a href="@Url.Action("EditRestaurant", "Admin", new { id = restaurant.Id })"
+                                   class="btn btn-light"
+                                   title="Update Restaurant"
+                                   style="display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;background:#e8f3ff;color:#1765a8;border:1px solid #c8e0fa;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap;">
+                                    ✎ Update
+                                </a>
+
+                                <form action="@Url.Action("DeleteRestaurant", "Admin")"
+                                      method="post"
+                                      style="display:inline;margin:0;"
+                                      onsubmit="return confirm('Are you sure you want to delete @restaurant.Name?');">
+
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@restaurant.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-light"
+                                            title="Delete Restaurant"
+                                            style="display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;background:#fff0ef;color:#c62828;border:1px solid #f5c2bf;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">
+                                        🗑 Delete
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!restaurants.Any())
+        {
+            <p style="padding:20px; text-align:center;">
+                No restaurants found in the database.
+            </p>
+        }
+    </div>
+</div>
+
+<script>
+    function filterRestaurants() {
+        const searchValue = document.getElementById("pageSearch").value.toLowerCase().trim();
+        const statusValue = document.getElementById("statusFilter").value;
+        const rows = document.querySelectorAll("#restaurantsTable tbody tr");
+        rows.forEach(function (row) {
+            const rowText = row.innerText.toLowerCase();
+            const statusCell = row.cells[4].innerText.toLowerCase().trim();
+            const matchesSearch = rowText.includes(searchValue);
+            const matchesStatus =
+                statusValue === "all" ||
+                (statusValue === "active" && statusCell.includes("active") && !statusCell.includes("unavailable")) ||
+                (statusValue === "unavailable" && statusCell.includes("unavailable"));
+            row.style.display = matchesSearch && matchesStatus ? "" : "none";
+        });
+    }
+</script>

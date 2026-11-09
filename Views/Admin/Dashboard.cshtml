@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Dashboard Overview</h1>
+        <p>Welcome back, Admin. Here's what's happening today.</p>
+    </div>
+    <button class="btn btn-primary" data-toast="Report generated successfully">＋ Generate Report</button>
+</div>
+
+<div class="cards">
+    <div class="card stat">
+        <div><p>TOTAL USERS</p><h3>245</h3><div class="trend">↑ 12.5% this month</div></div>
+        <div class="stat-icon">♙</div>
+    </div>
+    <div class="card stat">
+        <div><p>TOTAL HOTELS</p><h3>48</h3><div class="trend">↑ 6.2% this month</div></div>
+        <div class="stat-icon">⌂</div>
+    </div>
+    <div class="card stat">
+        <div><p>TOTAL ORDERS</p><h3>126</h3><div class="trend">↑ 18.4% this month</div></div>
+        <div class="stat-icon">▣</div>
+    </div>
+    <div class="card stat">
+        <div><p>MESSAGES</p><h3>19</h3><div class="trend">↑ 4 new today</div></div>
+        <div class="stat-icon">✉</div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <div class="card-head">
+            <div><h2>Orders Overview</h2><span>Monthly booking activity</span></div>
+            <button class="btn btn-light">Last 7 months ▾</button>
+        </div>
+        <div class="bar-chart">
+            <div class="bar" style="height:45%"><span>Apr</span></div>
+            <div class="bar" style="height:62%"><span>May</span></div>
+            <div class="bar" style="height:54%"><span>Jun</span></div>
+            <div class="bar" style="height:75%"><span>Jul</span></div>
+            <div class="bar" style="height:66%"><span>Aug</span></div>
+            <div class="bar" style="height:90%"><span>Sep</span></div>
+            <div class="bar" style="height:78%"><span>Oct</span></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-head"><h2>Recent Activity</h2><a href="#" class="btn btn-light">View all</a></div>
+        <div class="activity"><div class="activity-icon">▣</div><div><strong>New order received</strong><p>Ahmed booked Hunza travel package · 5 min ago</p></div></div>
+        <div class="activity"><div class="activity-icon">♙</div><div><strong>New user registered</strong><p>Fatima created an account · 24 min ago</p></div></div>
+        <div class="activity"><div class="activity-icon">✉</div><div><strong>New message</strong><p>Ali sent a support message · 1 hr ago</p></div></div>
+        <div class="activity"><div class="activity-icon">☆</div><div><strong>New feedback</strong><p>Sara rated a hotel 5 stars · 2 hrs ago</p></div></div>
+    </div>
+</div>
+
+<div class="card" style="margin-top:20px">
+    <div class="card-head"><h2>Recent Orders</h2><a href="/Admin/Orders" class="btn btn-light">View All</a></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Customer</th><th>Destination</th><th>Package</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>Ahmed Khan</td><td>Hunza</td><td>Mountain Escape</td><td>$420</td><td><span class="badge confirmed">Confirmed</span></td></tr>
+                <tr><td>Ali Raza</td><td>Murree</td><td>Weekend Trip</td><td>$180</td><td><span class="badge pending">Pending</span></td></tr>
+                <tr><td>Sara Ahmed</td><td>Skardu</td><td>Adventure Tour</td><td>$650</td><td><span class="badge confirmed">Confirmed</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
